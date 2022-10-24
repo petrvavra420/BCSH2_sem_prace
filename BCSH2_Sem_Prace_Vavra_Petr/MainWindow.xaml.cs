@@ -27,6 +27,7 @@ namespace BCSH2_Sem_Prace_Vavra_Petr
     {
         public MainWindow()
         {
+            //test
             InitializeComponent();
             DatabaseTools dt = new DatabaseTools();
             LiteDatabase db = dt.connectToDatabase(@"C:\Temp\DatabaseTest.db");
