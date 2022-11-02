@@ -23,6 +23,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
             this.PostalCode = PostalCode;
         }
 
+        public Adress()
+        {
+
+        }
+
         public override string ToString()
         {
             return Country + " " + City + " " + Street + " " + PostalCode;

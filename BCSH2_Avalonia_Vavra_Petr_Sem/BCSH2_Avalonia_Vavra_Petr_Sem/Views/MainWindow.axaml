@@ -8,6 +8,6 @@
         x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="BCSH2_Avalonia_Vavra_Petr_Sem"
-		Content="{Binding WindowContent}">
+		Content="{Binding Content}">
 
 </Window>

@@ -16,13 +16,17 @@
 			<ColumnDefinition Width="*"></ColumnDefinition>
 			<ColumnDefinition Width="*"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
-		<ListBox SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"></ListBox>
-			<TextBlock Text="{Binding SelectedEntityString}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<ListBox  SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"/>	
 		
-		<StackPanel Grid.Column="1">
-			<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Text="{Binding SelectedEntityString}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		<StackPanel Grid.Column="1" Grid.Row="1">
 			
-			<Button Width="160" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
+			
+			<Button Margin="10,5,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
+			<Button Margin="10,5,10,5" Width="190" Command="{Binding EditovatZaznamCommand}">Editovat vybraný záznam</Button>
+			<WrapPanel Margin="10,5,10,5">
+			<TextBlock Text="Výběr tabulky:" Margin="10,0,10,0" VerticalAlignment="Center"></TextBlock>
 			<ComboBox SelectedIndex="{Binding SelectedEntity}" >
 				<ComboBoxItem>Dělník</ComboBoxItem>
 				<ComboBoxItem>Linka</ComboBoxItem>
@@ -30,6 +34,7 @@
 				<ComboBoxItem>Stroj</ComboBoxItem>
 				<ComboBoxItem>Závod</ComboBoxItem>
 			</ComboBox>
+			</WrapPanel>
 
 			<TextBlock Text="{Binding ListSelectedItem}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 

@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
 {
-    public class Linka
+    public class Linka : ICollectionModels
     {
         public int LinkaId { get; set; }
         public string Name { get; set; }

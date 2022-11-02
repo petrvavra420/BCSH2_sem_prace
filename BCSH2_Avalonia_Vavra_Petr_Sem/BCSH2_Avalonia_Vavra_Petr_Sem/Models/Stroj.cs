@@ -1,4 +1,5 @@
-﻿using LiteDB;
+﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
+using LiteDB;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
 {
-    public class Stroj
+    public class Stroj : ICollectionModels
     {
         public int StrojId { get; set; }
         public string Name { get; set; }

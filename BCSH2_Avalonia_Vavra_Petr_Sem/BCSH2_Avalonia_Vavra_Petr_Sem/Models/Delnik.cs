@@ -1,4 +1,5 @@
-﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Models.Enums;
+﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
+using BCSH2_Avalonia_Vavra_Petr_Sem.Models.Enums;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
 {
-    public class Delnik
+    public class Delnik : ICollectionModels
     {
         public int DelnikId { get; set; }
         public string Name { get; set; }

@@ -1,4 +1,6 @@
-﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
+﻿using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
+using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
+using BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels;
 using LiteDB;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
 {
-    public class Zavod
+    public class Zavod : ICollectionModels
     {
         public int ZavodId { get; set; }
         public string Name { get; set; }

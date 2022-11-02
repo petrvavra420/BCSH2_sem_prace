@@ -5,10 +5,11 @@ using LiteDB;
 using System.Text;
 using System.Threading.Tasks;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models.Enums;
+using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
 
 namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
 {
-    public class Mistr
+    public class Mistr : ICollectionModels
     {
         public int MistrId { get; set; }
         public string Name { get; set; }

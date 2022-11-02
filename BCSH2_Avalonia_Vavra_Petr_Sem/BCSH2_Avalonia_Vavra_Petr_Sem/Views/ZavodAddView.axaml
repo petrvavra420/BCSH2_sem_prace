@@ -1,0 +1,23 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="450"
+             x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.ZavodAddView">
+	<Grid>
+		<Grid.RowDefinitions>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+		</Grid.ColumnDefinitions>
+		<StackPanel Width="200">
+		<TextBox Text="{Binding ZavodName}" Watermark="Název"></TextBox>
+		<TextBox Text="{Binding ZavodStat}" Watermark="Stát"></TextBox>
+		<TextBox Text="{Binding ZavodMesto}" Watermark="Město"></TextBox>
+		<TextBox Text="{Binding ZavodUlice}" Watermark="Ulice"></TextBox>
+		<TextBox Text="{Binding ZavodCisloPopisne}" Watermark="Číslo p."></TextBox>
+		<TextBox Text="{Binding ZavodPSC}" Watermark="PSČ"></TextBox>
+			<Button Command="{Binding Ok}" Margin="5,10,5,5" HorizontalAlignment="Center" Width="150"> Přidat</Button>
+			<Button Command="{Binding Cancel}" Margin="5,5,5,5" HorizontalAlignment="Center" Width="150"> Zrušit</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>

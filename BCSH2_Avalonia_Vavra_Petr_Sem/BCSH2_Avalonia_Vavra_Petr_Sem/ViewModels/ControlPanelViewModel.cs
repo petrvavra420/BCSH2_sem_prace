@@ -1,3 +1,4 @@
+using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models.Enums;
 using LiteDB;
@@ -13,7 +14,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
     public class ControlPanelViewModel : ViewModelBase
     {
         Object _selectedItemList;
-        public Object ListSelectedItem { 
+        public Object ListSelectedItem
+        {
             get => _selectedItemList;
             set
             {
@@ -53,10 +55,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         LiteDatabase db = new LiteDatabase(@"C:\Temp\Databasetest.db");
 
+        public ObservableCollection<ICollectionModels> Items { get; set; }
+        private MainWindowViewModel MainViewModel { get; set; }
 
-        public ControlPanelViewModel()
+        public ControlPanelViewModel(MainWindowViewModel mainWindowViewModel)
         {
-            Items = new ObservableCollection<Object>();
+            MainViewModel = mainWindowViewModel;
+            Items = new ObservableCollection<ICollectionModels>();
 
             PridatZaznamCommand = ReactiveCommand.Create(PridejZaznam);
 
@@ -65,12 +70,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             var colDelnik = db.GetCollection<Delnik>("Delnik");
             IEnumerable<Delnik> resultsDelnik = colDelnik.FindAll();
 
-            foreach (var result in resultsDelnik)
+            foreach (Delnik result in resultsDelnik)
             {
-                Items.Add(result.ToString());
+                Items.Add(result);
             }
         }
-        public ObservableCollection<Object> Items { get; }
+
+
 
         public ReactiveCommand<Unit, Unit> PridatZaznamCommand { get; }
 
@@ -81,7 +87,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             {
                 case 0:
                     SelectedEntityString = "Dìlníci";
-                    Items.Clear();
+                    VymazSeznam();
                     var colDelnik = db.GetCollection<Delnik>("Delnik");
                     IEnumerable<Delnik> resultsDelnik = colDelnik.FindAll();
                     //Delnik delnikNew = new Delnik("Jméno dìlníka",ShiftsEnum.SHIFT_A,1,1);
@@ -89,12 +95,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                     //colDelnik.EnsureIndex(x => x.DelnikId);
                     foreach (var result in resultsDelnik)
                     {
-                        Items.Add(result.ToString());
+                        Items.Add(result);
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
                     break;
                 case 1:
-                    SelectedEntityString = "Linky";
                     Items.Clear();
+                    SelectedEntityString = "Linky";
                     var colLinka = db.GetCollection<Linka>("Linka");
                     //Linka linkaNew = new Linka("Linka 1", ProductsEnum.PRODUCT_4, 1);
                     //colLinka.Insert(linkaNew);
@@ -103,13 +110,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
                     foreach (var result in resultsLinka)
                     {
-                        Items.Add(result.ToString());
+                        Items.Add(result);
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
                     break;
                 case 2:
-                    SelectedEntityString = "Mistøi";
-
                     Items.Clear();
+                    SelectedEntityString = "Mistøi";
                     var colMistr = db.GetCollection<Mistr>("Mistr");
                     IEnumerable<Mistr> resultsMistr = colMistr.FindAll();
                     //Mistr mistrNew = new Mistr("Jméno Mistra", ShiftsEnum.SHIFT_A, 1);
@@ -117,12 +124,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                     //colMistr.EnsureIndex(x => x.MistrId);
                     foreach (var result in resultsMistr)
                     {
-                        Items.Add(result.ToString());
+                        Items.Add(result);
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
                     break;
                 case 3:
-                    SelectedEntityString = "Stroje";
                     Items.Clear();
+                    SelectedEntityString = "Stroje";
                     var colStroj = db.GetCollection<Stroj>("Stroj");
                     IEnumerable<Stroj> resultsStroj = colStroj.FindAll();
                     //Stroj strojNew = new Stroj("Stroj 1", 120, 1);
@@ -131,12 +139,15 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
                     foreach (var result in resultsStroj)
                     {
-                        Items.Add(result.ToString());
+                        Items.Add(result);
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
+
+                    System.Diagnostics.Debug.WriteLine(Items.Count);
                     break;
                 case 4:
-                    SelectedEntityString = "Závody";
                     Items.Clear();
+                    SelectedEntityString = "Závody";
                     var colZavod = db.GetCollection<Zavod>("Zavod");
                     //Zavod zavodNew = new Zavod("Zavod", new Adress("Zeme1", "Mesto1", "Ulice1", 157, 58945));
                     //colZavod.Insert(zavodNew);
@@ -145,7 +156,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
                     foreach (var result in resultsZavod)
                     {
-                        Items.Add(result.ToString());
+                        Items.Add(result);
+                        System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
                     break;
 
@@ -156,10 +168,64 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         void PridejZaznam()
         {
+            
             Console.WriteLine("COMMAND EXECUTED");
-            SelectedEntity = 420;
-            Console.WriteLine("COMMAND EXECUTED");
-            Items.Add("Pridano1");
+            switch (_selectedEntity)
+            {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    MainViewModel.ZavodAddItem();
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void VymazSeznam()
+        {
+            while (Items.Count > 0)
+            {
+                Items.RemoveAt(0);
+            }
+
+        }
+
+        public void VlozZaznam(ICollectionModels polozka)
+        {
+            //pozdìji v každé tøídì vytvoøit metodu get type aby se dal použít switch
+            if (polozka is Zavod)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colZavod = db.GetCollection<Zavod>("Zavod");
+                colZavod.Insert((Zavod)polozka);
+                colZavod.EnsureIndex(x => x.ZavodId);
+                Items.Add(polozka);
+
+            }
+            else if (polozka is Stroj)
+            {
+
+            }
+            else if (polozka is Mistr)
+            {
+
+            }
+            else if (polozka is Linka)
+            {
+
+            }
+            else if (polozka is Delnik)
+            {
+
+            }
+
         }
 
     }
