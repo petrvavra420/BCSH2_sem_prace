@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32929.385
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCSH2_Avalonia_Vavra_Petr_Sem", "BCSH2_Avalonia_Vavra_Petr_Sem\BCSH2_Avalonia_Vavra_Petr_Sem.csproj", "{C6ECB491-F10B-4794-9A37-9D84886431DF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6ECB491-F10B-4794-9A37-9D84886431DF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6ECB491-F10B-4794-9A37-9D84886431DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6ECB491-F10B-4794-9A37-9D84886431DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6ECB491-F10B-4794-9A37-9D84886431DF}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5FD6F972-4DBD-428D-8F63-52EB865ADA2B}
+	EndGlobalSection
+EndGlobal

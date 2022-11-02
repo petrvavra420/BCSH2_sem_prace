@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.ControlPanelView">
+
+	
+	
+	<Grid ShowGridLines="True">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="20"></RowDefinition>
+			<RowDefinition Height="*"></RowDefinition>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="*"></ColumnDefinition>
+		</Grid.ColumnDefinitions>
+		<ListBox SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"></ListBox>
+			<TextBlock Text="{Binding SelectedEntityString}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+		
+		<StackPanel Grid.Column="1">
+			<TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+			
+			<Button Width="160" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
+			<ComboBox SelectedIndex="{Binding SelectedEntity}" >
+				<ComboBoxItem>Dělník</ComboBoxItem>
+				<ComboBoxItem>Linka</ComboBoxItem>
+				<ComboBoxItem>Mistr</ComboBoxItem>
+				<ComboBoxItem>Stroj</ComboBoxItem>
+				<ComboBoxItem>Závod</ComboBoxItem>
+			</ComboBox>
+
+			<TextBlock Text="{Binding ListSelectedItem}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+		</StackPanel>
+	</Grid>
+</UserControl>
