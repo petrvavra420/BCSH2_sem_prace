@@ -2,7 +2,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d"  d:DesignHeight="450"
              x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.ControlPanelView">
 
 	
@@ -13,8 +13,8 @@
 			<RowDefinition Height="*"></RowDefinition>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
-			<ColumnDefinition Width="*"></ColumnDefinition>
-			<ColumnDefinition Width="*"></ColumnDefinition>
+			<ColumnDefinition Width="600"></ColumnDefinition>
+			<ColumnDefinition Width="250"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
 		<ListBox  SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"/>	
 		
@@ -23,11 +23,12 @@
 		<StackPanel Grid.Column="1" Grid.Row="1">
 			
 			
-			<Button Margin="10,5,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
-			<Button Margin="10,5,10,5" Width="190" Command="{Binding EditovatZaznamCommand}">Editovat vybraný záznam</Button>
+			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
+			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding EditovatZaznamCommand}">Editovat vybraný záznam</Button>
+			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding OdebratZaznamCommand}">Smazat vybraný záznam</Button>
 			<WrapPanel Margin="10,5,10,5">
 			<TextBlock Text="Výběr tabulky:" Margin="10,0,10,0" VerticalAlignment="Center"></TextBlock>
-			<ComboBox SelectedIndex="{Binding SelectedEntity}" >
+			<ComboBox Width="110" SelectedIndex="{Binding SelectedEntity}" >
 				<ComboBoxItem>Dělník</ComboBoxItem>
 				<ComboBoxItem>Linka</ComboBoxItem>
 				<ComboBoxItem>Mistr</ComboBoxItem>

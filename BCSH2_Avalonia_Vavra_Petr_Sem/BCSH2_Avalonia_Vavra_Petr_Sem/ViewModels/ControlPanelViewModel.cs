@@ -13,8 +13,15 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 {
     public class ControlPanelViewModel : ViewModelBase
     {
-        Object _selectedItemList;
-        public Object ListSelectedItem
+        ICollectionModels _selectedItemList;
+        private int _selectedEntity;
+        //Výchozí hodnota
+        private string _selectedEntityString = "Dìlníci";
+        LiteDatabase db = new LiteDatabase(@"C:\Temp\Databasetest.db");
+        public string Greeting => "Nástroje";
+        public ObservableCollection<ICollectionModels> Items { get; set; }
+        private MainWindowViewModel MainViewModel { get; set; }
+        public ICollectionModels ListSelectedItem
         {
             get => _selectedItemList;
             set
@@ -29,7 +36,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             //Items.Add(_selectedItemList);
         }
 
-        private string _selectedEntityString = "test";
+
         public string SelectedEntityString
         {
             get
@@ -42,8 +49,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 _selectedEntityString = value;
             }
         }
-        public string Greeting => "Evidence";
-        private int _selectedEntity;
+
         public int SelectedEntity
         {
             get { return _selectedEntity; }
@@ -53,10 +59,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 ComboBoxSelectionChanged();
             }
         }
-        LiteDatabase db = new LiteDatabase(@"C:\Temp\Databasetest.db");
 
-        public ObservableCollection<ICollectionModels> Items { get; set; }
-        private MainWindowViewModel MainViewModel { get; set; }
 
         public ControlPanelViewModel(MainWindowViewModel mainWindowViewModel)
         {
@@ -64,6 +67,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             Items = new ObservableCollection<ICollectionModels>();
 
             PridatZaznamCommand = ReactiveCommand.Create(PridejZaznam);
+            OdebratZaznamCommand = ReactiveCommand.Create(OdeberZaznam);
 
             //defaultnì zobrazí dìlníky
             Items.Clear();
@@ -76,8 +80,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        
 
-
+        public ReactiveCommand<Unit, Unit> OdebratZaznamCommand { get; }
         public ReactiveCommand<Unit, Unit> PridatZaznamCommand { get; }
 
         void ComboBoxSelectionChanged()
@@ -166,9 +171,60 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                     break;
             }
         }
+
+
+        private void OdeberZaznam()
+        {
+            bool isDeleted = false;
+            ICollectionModels polozka = ListSelectedItem;
+            if (polozka is Zavod)
+            {
+                Zavod z = (Zavod)polozka;
+                var colZavod = db.GetCollection<Zavod>("Zavod");
+                isDeleted = colZavod.Delete(z.ZavodId);
+                Items.Remove(ListSelectedItem);
+            }
+            else if (polozka is Stroj)
+            {
+                Stroj s = (Stroj)polozka;
+                var colStroj = db.GetCollection<Zavod>("Zavod");
+                isDeleted = colStroj.Delete(s.StrojId);
+                Items.Remove(ListSelectedItem);
+            }
+            else if (polozka is Mistr)
+            {
+                Mistr m = (Mistr)polozka;
+                var colMistr = db.GetCollection<Mistr>("Mistr");
+                isDeleted = colMistr.Delete(m.MistrId);
+                Items.Remove(ListSelectedItem);
+            }
+            else if (polozka is Linka)
+            {
+                Linka l = (Linka)polozka;
+                var colLinka = db.GetCollection<Linka>("Linka");
+                isDeleted = colLinka.Delete(l.LinkaId);
+                Items.Remove(ListSelectedItem);
+            }
+            else if (polozka is Delnik)
+            {
+                Delnik d = (Delnik)polozka;
+                var colDelnik = db.GetCollection<Delnik>("Delnik");
+                isDeleted = colDelnik.Delete(d.DelnikId);
+                Items.Remove(ListSelectedItem);
+            }
+
+            if (isDeleted)
+            {
+                System.Diagnostics.Debug.WriteLine("Záznam smazán");
+            }
+            else { 
+                System.Diagnostics.Debug.WriteLine("Chyba - záznam nemohl být smazán");
+            }
+        }
+
         void PridejZaznam()
         {
-            
+            //podle toho jaká je vybraná entita v ComboBoxu zavolá metodu Add - ta zmìní view
             Console.WriteLine("COMMAND EXECUTED");
             switch (_selectedEntity)
             {

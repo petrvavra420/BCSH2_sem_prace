@@ -18,6 +18,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         public int zavodCisloPopisne;
         public int zavodPSC;
 
+        //vlastnosti jsou modifikované aby reagovaly na změny
         public string ZavodName
         {
             get => zavodName;
@@ -50,9 +51,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         public ZavodAddViewModel()
         {
-            //var okEnabled = this.WhenAnyValue(
-            //        x => x.ZavodName, x => !string.IsNullOrWhiteSpace(x)
-            //    );
+            // Kontroluje TextBoxy pomocí lambda výrazu - reprezentuje stream bool hodnot 
             var okEnabled = this.WhenAnyValue(
                     x => x.ZavodName, x => x.ZavodStat, x => x.ZavodMesto, x => x.ZavodUlice, x => x.ZavodCisloPopisne, x => x.ZavodPSC,
                     (name, stat, mesto, ulice, cp, psc) =>
@@ -65,6 +64,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 );
             //Zavod zavod = new Zavod(ZavodName, new Adress(ZavodStat, ZavodMesto, ZavodUlice, ZavodCisloPopisne, ZavodPSC));
             //Ok = ReactiveCommand.Create(() => zavod);
+            
+            //inicializace příkazů - reaguje na ně listener ve třídě MainWindowViewModel v metodě ZavodAddItem()
+            //příkaz OK předává vytvořenou položku Zavod, druhý parametr je bool CanExecute
             Ok = ReactiveCommand.Create(() => new Zavod
             {
                 Name = ZavodName,

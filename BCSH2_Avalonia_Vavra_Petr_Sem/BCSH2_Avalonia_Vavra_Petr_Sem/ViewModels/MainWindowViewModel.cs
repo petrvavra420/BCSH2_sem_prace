@@ -23,8 +23,14 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         public ControlPanelViewModel MainPage { get; }
 
-        public void ZavodAddItem() {
+        public void ZavodAddItem()
+        {
             var vm = new ZavodAddViewModel();
+            //Reactive pøíkazy se dají odposlouchávat a produkují hodnotu kdykoliv jsou spuštìny
+            //Merge spojí oba pøíkazy do jednoho streamu, ty musí být stejného typu a proto se musí Cancel pøetypovat
+            //Take(1) vezme první hodnotu v proudu který bude buï OK nebo CANCEL
+            //Subscribe naslouchá hodnotì proudu a pokud není NULL(což bude pokud se zmáèkne cancel) zavolá metodu VlozZaznam
+            //VlozZaznam má v parametru ICollectionModels a rozpozná o jaký typ se jedná a vloží ho do kolekce
             Observable.Merge(vm.Ok,vm.Cancel.Select(_ => (Zavod)null))
                 .Take(1)
                 .Subscribe(model =>
