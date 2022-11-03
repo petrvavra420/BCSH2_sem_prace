@@ -1,0 +1,33 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.LinkaAddView">
+	<Grid Margin="50">
+		<Grid.RowDefinitions>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+		</Grid.ColumnDefinitions>
+		<StackPanel Width="400">
+			<TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">Přidat novou linku</TextBlock>
+
+			<WrapPanel Margin="5" HorizontalAlignment="Center">
+				<TextBlock VerticalAlignment="Center" Margin="0,0,20,0">Název linky: </TextBlock>
+				<TextBox Width="140" Text="{Binding LinkaName}" Watermark="Název linky"></TextBox>
+			</WrapPanel>
+			<WrapPanel Margin="5" HorizontalAlignment="Center">
+				<TextBlock VerticalAlignment="Center" Margin="0,0,20,0">Produkt: </TextBlock>
+				<ComboBox SelectedItem="{Binding LinkaProductSelectedItem}" Width="140" Items="{Binding LinkaAddItems}">
+				</ComboBox>
+			</WrapPanel>
+			<WrapPanel Margin="5" HorizontalAlignment="Center">
+				<TextBlock VerticalAlignment="Center" Margin="0,0,20,0">Závod: </TextBlock>
+				<ComboBox SelectedItem="{Binding LinkaZavodSelectedItem}" Width="140" Items="{Binding LinkaZavodItems}">
+				</ComboBox>
+			</WrapPanel>
+			<Button Command="{Binding LinkaOk}" Margin="5,10,5,5" HorizontalAlignment="Center" Width="150"> Přidat</Button>
+			<Button Command="{Binding LinkaCancel}" Margin="5,5,5,5" HorizontalAlignment="Center" Width="150"> Zrušit</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>

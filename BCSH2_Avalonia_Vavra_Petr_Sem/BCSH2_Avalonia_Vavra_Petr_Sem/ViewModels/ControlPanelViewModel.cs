@@ -17,7 +17,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         private int _selectedEntity;
         //Výchozí hodnota
         private string _selectedEntityString = "Dìlníci";
-        LiteDatabase db = new LiteDatabase(@"C:\Temp\Databasetest.db");
+        LiteDatabase db;
         public string Greeting => "Nástroje";
         public ObservableCollection<ICollectionModels> Items { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
@@ -61,8 +61,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
 
 
-        public ControlPanelViewModel(MainWindowViewModel mainWindowViewModel)
+        public ControlPanelViewModel(MainWindowViewModel mainWindowViewModel, LiteDatabase database)
         {
+            db = database;
             MainViewModel = mainWindowViewModel;
             Items = new ObservableCollection<ICollectionModels>();
 
@@ -175,6 +176,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         private void OdeberZaznam()
         {
+            //Vezme aktuálnì vybranou položku v ListBoxu, rozpozná její typ a smaže ji z DB a ListBoxu
             bool isDeleted = false;
             ICollectionModels polozka = ListSelectedItem;
             if (polozka is Zavod)
@@ -231,6 +233,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 case 0:
                     break;
                 case 1:
+                    MainViewModel.LinkaAddItem();
                     break;
                 case 2:
                     break;
@@ -244,6 +247,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        //obsolete
         private void VymazSeznam()
         {
             while (Items.Count > 0)
@@ -255,6 +259,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         public void VlozZaznam(ICollectionModels polozka)
         {
+            //v parametru pøevezme položku, rozpozná její typ a podle toho pøidá do urèité tabulky v databázi
             //pozdìji v každé tøídì vytvoøit metodu get type aby se dal použít switch
             if (polozka is Zavod)
             {
@@ -275,7 +280,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
             else if (polozka is Linka)
             {
-
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colLinka = db.GetCollection<Linka>("Linka");
+                colLinka.Insert((Linka)polozka);
+                colLinka.EnsureIndex(x => x.LinkaId);
+                Items.Add(polozka);
             }
             else if (polozka is Delnik)
             {

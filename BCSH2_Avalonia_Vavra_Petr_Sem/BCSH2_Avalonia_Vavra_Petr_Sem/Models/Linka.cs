@@ -29,6 +29,10 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
             Product = product;
         }
 
+        public Linka()
+        {
+        }
+
         [BsonCtor]
         public Linka(int _id, string name, ProductsEnum product, int _zavodId)
         {

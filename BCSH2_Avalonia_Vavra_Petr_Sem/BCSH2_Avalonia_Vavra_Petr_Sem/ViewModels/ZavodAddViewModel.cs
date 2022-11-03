@@ -51,6 +51,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         public ZavodAddViewModel()
         {
+            ZavodCisloPopisne = 12;
+            ZavodPSC = 19016;
             // Kontroluje TextBoxy pomocí lambda výrazu - reprezentuje stream bool hodnot 
             var okEnabled = this.WhenAnyValue(
                     x => x.ZavodName, x => x.ZavodStat, x => x.ZavodMesto, x => x.ZavodUlice, x => x.ZavodCisloPopisne, x => x.ZavodPSC,

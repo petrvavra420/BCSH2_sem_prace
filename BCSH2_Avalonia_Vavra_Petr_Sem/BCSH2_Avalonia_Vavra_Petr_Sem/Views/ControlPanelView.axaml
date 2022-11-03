@@ -7,28 +7,28 @@
 
 	
 	
-	<Grid ShowGridLines="True">
+	<Grid ShowGridLines="False" Margin="0,20,0,0">
 		<Grid.RowDefinitions>
 			<RowDefinition Height="20"></RowDefinition>
 			<RowDefinition Height="*"></RowDefinition>
 		</Grid.RowDefinitions>
 		<Grid.ColumnDefinitions>
 			<ColumnDefinition Width="600"></ColumnDefinition>
-			<ColumnDefinition Width="250"></ColumnDefinition>
+			<ColumnDefinition Width="350"></ColumnDefinition>
 		</Grid.ColumnDefinitions>
-		<ListBox  SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"/>	
+		<ListBox Margin="20,20,20,20"  SelectedItem="{Binding ListSelectedItem}" Items="{Binding Items}" Grid.Column="0" Grid.Row="1"/>	
 		
-		<TextBlock Text="{Binding SelectedEntityString}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<TextBlock Grid.Column="1" Grid.Row="0" Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-		<StackPanel Grid.Column="1" Grid.Row="1">
+		<TextBlock FontSize="18" Text="{Binding SelectedEntityString}" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Center" />
+		<TextBlock FontSize="18" Grid.Column="1" Grid.Row="0" Text="{Binding Greeting}" HorizontalAlignment="Center" />
+		<StackPanel Margin="20,20,20,20" Grid.Column="1" Grid.Row="1">
 			
 			
-			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
+			<Button HorizontalAlignment="Center" Margin="10,0,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
 			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding EditovatZaznamCommand}">Editovat vybraný záznam</Button>
 			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding OdebratZaznamCommand}">Smazat vybraný záznam</Button>
-			<WrapPanel Margin="10,5,10,5">
+			<WrapPanel HorizontalAlignment="Center" Margin="10,5,10,5">
 			<TextBlock Text="Výběr tabulky:" Margin="10,0,10,0" VerticalAlignment="Center"></TextBlock>
-			<ComboBox Width="110" SelectedIndex="{Binding SelectedEntity}" >
+			<ComboBox  SelectedIndex="{Binding SelectedEntity}" >
 				<ComboBoxItem>Dělník</ComboBoxItem>
 				<ComboBoxItem>Linka</ComboBoxItem>
 				<ComboBoxItem>Mistr</ComboBoxItem>

@@ -1,5 +1,6 @@
 using Avalonia.Controls;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
+using LiteDB;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
     public class MainWindowViewModel : ViewModelBase
     {
         ViewModelBase content;
+        LiteDatabase db;
         public ViewModelBase Content { 
             get=> content;
             private set => this.RaiseAndSetIfChanged(ref content, value);
@@ -19,7 +21,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         public MainWindowViewModel()
         {
-            Content = MainPage = new ControlPanelViewModel(this);
+            db = new LiteDatabase(@"C:\Temp\Databasetest.db");
+            Content = MainPage = new ControlPanelViewModel(this, db);
         }
         public ControlPanelViewModel MainPage { get; }
 
@@ -42,6 +45,24 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                         Content = MainPage;
                     }
                 );
+            Content = vm;
+        }
+
+        public void LinkaAddItem()
+        {
+            var vm = new LinkaAddViewModel(db);
+            Observable.Merge(vm.LinkaOk, vm.LinkaCancel.Select(_ => (Linka)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.VlozZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+
             Content = vm;
         }
     }
