@@ -29,6 +29,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
             Name = name;
             ManufacturingSpeed = manufacturingSpeed;
         }
+        public Stroj()
+        {
+        }
 
         [BsonCtor]
         public Stroj(int _id, string name, int manufacturingSpeed, int _linkaId)

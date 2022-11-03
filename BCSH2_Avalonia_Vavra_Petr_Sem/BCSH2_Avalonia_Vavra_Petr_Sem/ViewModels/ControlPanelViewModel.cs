@@ -189,7 +189,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             else if (polozka is Stroj)
             {
                 Stroj s = (Stroj)polozka;
-                var colStroj = db.GetCollection<Zavod>("Zavod");
+                var colStroj = db.GetCollection<Stroj>("Stroj");
                 isDeleted = colStroj.Delete(s.StrojId);
                 Items.Remove(ListSelectedItem);
             }
@@ -224,6 +224,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        //Mìní obsah window
         void PridejZaznam()
         {
             //podle toho jaká je vybraná entita v ComboBoxu zavolá metodu Add - ta zmìní view
@@ -236,8 +237,10 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                     MainViewModel.LinkaAddItem();
                     break;
                 case 2:
+                    MainViewModel.MistrAddItem();
                     break;
                 case 3:
+                    MainViewModel.StrojAddItem();
                     break;
                 case 4:
                     MainViewModel.ZavodAddItem();
@@ -257,6 +260,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         }
 
+        //Vkládá záznam do DB a kolekce
         public void VlozZaznam(ICollectionModels polozka)
         {
             //v parametru pøevezme položku, rozpozná její typ a podle toho pøidá do urèité tabulky v databázi
@@ -272,11 +276,19 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
             else if (polozka is Stroj)
             {
-
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colStroj = db.GetCollection<Stroj>("Stroj");
+                colStroj.Insert((Stroj)polozka);
+                colStroj.EnsureIndex(x => x.StrojId);
+                Items.Add(polozka);
             }
             else if (polozka is Mistr)
             {
-
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colMistr = db.GetCollection<Mistr>("Mistr");
+                colMistr.Insert((Mistr)polozka);
+                colMistr.EnsureIndex(x => x.MistrId);
+                Items.Add(polozka);
             }
             else if (polozka is Linka)
             {

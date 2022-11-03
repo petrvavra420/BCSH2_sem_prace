@@ -27,6 +27,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
             Name = name;
             Shift = shift;
         }
+        public Mistr()
+        {
+        }
 
         public override string ToString()
         {

@@ -13,8 +13,9 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
     {
         ViewModelBase content;
         LiteDatabase db;
-        public ViewModelBase Content { 
-            get=> content;
+        public ViewModelBase Content
+        {
+            get => content;
             private set => this.RaiseAndSetIfChanged(ref content, value);
         }
         public string Greeting => "Welcome to Avalonia!";
@@ -34,7 +35,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             //Take(1) vezme první hodnotu v proudu který bude buï OK nebo CANCEL
             //Subscribe naslouchá hodnotì proudu a pokud není NULL(což bude pokud se zmáèkne cancel) zavolá metodu VlozZaznam
             //VlozZaznam má v parametru ICollectionModels a rozpozná o jaký typ se jedná a vloží ho do kolekce
-            Observable.Merge(vm.Ok,vm.Cancel.Select(_ => (Zavod)null))
+            Observable.Merge(vm.Ok, vm.Cancel.Select(_ => (Zavod)null))
                 .Take(1)
                 .Subscribe(model =>
                     {
@@ -63,6 +64,40 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 }
                 );
 
+            Content = vm;
+        }
+
+        public void StrojAddItem()
+        {
+            var vm = new StrojAddViewModel(db);
+            Observable.Merge(vm.StrojOk, vm.StrojCancel.Select(_ => (Stroj)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.VlozZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+            Content = vm;
+        }
+
+        public void MistrAddItem()
+        {
+            var vm = new MistrAddViewModel(db);
+            Observable.Merge(vm.MistrOk, vm.MistrCancel.Select(_ => (Mistr)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.VlozZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
             Content = vm;
         }
     }
