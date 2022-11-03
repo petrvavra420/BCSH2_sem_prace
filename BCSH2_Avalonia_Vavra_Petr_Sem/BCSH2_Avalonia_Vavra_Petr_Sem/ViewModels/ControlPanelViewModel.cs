@@ -6,6 +6,7 @@ using ReactiveUI;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Reactive;
 using System.Text;
 
@@ -13,6 +14,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 {
     public class ControlPanelViewModel : ViewModelBase
     {
+        private string searchBoxText;
         ICollectionModels _selectedItemList;
         private int _selectedEntity;
         //Výchozí hodnota
@@ -21,6 +23,17 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         public string Greeting => "Nástroje";
         public ObservableCollection<ICollectionModels> Items { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
+
+        public string SearchBoxText
+        {
+            get => searchBoxText;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref searchBoxText, value);
+                OnSearchInputChange();
+            }
+        }
+
         public ICollectionModels ListSelectedItem
         {
             get => _selectedItemList;
@@ -81,7 +94,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
-        
+
 
         public ReactiveCommand<Unit, Unit> OdebratZaznamCommand { get; }
         public ReactiveCommand<Unit, Unit> PridatZaznamCommand { get; }
@@ -219,7 +232,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             {
                 System.Diagnostics.Debug.WriteLine("Záznam smazán");
             }
-            else { 
+            else
+            {
                 System.Diagnostics.Debug.WriteLine("Chyba - záznam nemohl být smazán");
             }
         }
@@ -309,6 +323,34 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
 
         }
+
+        private void OnSearchInputChange()
+        {
+            //vyhledávání podle všeho
+            if (!string.IsNullOrWhiteSpace(SearchBoxText))
+            {
+                ObservableCollection<ICollectionModels> itemsSearched = new ObservableCollection<ICollectionModels>();
+                IEnumerable<ICollectionModels> itemsFound = Items.Where(x => x.ToString().Contains(SearchBoxText));
+                itemsSearched.Clear();
+                foreach (var item in itemsFound)
+                {
+                    itemsSearched.Add(item);
+                }
+
+                Items.Clear();
+                for (int i = 0; i < itemsSearched.Count; i++)
+                {
+                    Items.Add(itemsSearched[i]);
+                }
+            }
+            else
+            {
+                ComboBoxSelectionChanged();
+            }
+        }
+
+
+
 
     }
 }

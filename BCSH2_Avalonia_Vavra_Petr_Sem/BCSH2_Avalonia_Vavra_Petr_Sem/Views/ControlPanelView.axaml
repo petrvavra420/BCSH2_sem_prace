@@ -36,7 +36,12 @@
 				<ComboBoxItem>Závod</ComboBoxItem>
 			</ComboBox>
 			</WrapPanel>
-
+  
+			<WrapPanel HorizontalAlignment="Center" Margin="10,5,10,5">
+				<TextBlock  Margin="0,0,10,0" VerticalAlignment="Center">Vyhledávání:</TextBlock>
+				<TextBox Text="{Binding SearchBoxText}" Width="140"></TextBox>
+			</WrapPanel>
+			
 			<TextBlock Text="{Binding ListSelectedItem}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 		</StackPanel>
