@@ -37,9 +37,10 @@
 			</ComboBox>
 			</WrapPanel>
   
-			<WrapPanel HorizontalAlignment="Center" Margin="10,5,10,5">
+			<WrapPanel Width="350"  HorizontalAlignment="Center" Margin="10,5,10,5">
 				<TextBlock  Margin="0,0,10,0" VerticalAlignment="Center">Vyhledávání:</TextBlock>
 				<TextBox Text="{Binding SearchBoxText}" Width="140"></TextBox>
+				<ComboBox SelectedItem="{Binding SearchComboBoxSelectedItem}" Items="{Binding SearchComboBoxItems}"></ComboBox>
 			</WrapPanel>
 			
 			<TextBlock Text="{Binding ListSelectedItem}" HorizontalAlignment="Center" VerticalAlignment="Center"/>

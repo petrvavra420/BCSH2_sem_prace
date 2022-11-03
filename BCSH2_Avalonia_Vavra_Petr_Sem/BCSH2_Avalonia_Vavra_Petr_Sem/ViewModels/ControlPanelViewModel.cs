@@ -19,10 +19,27 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         private int _selectedEntity;
         //Výchozí hodnota
         private string _selectedEntityString = "Dìlníci";
+        private string searchComboBoxSelectedItem;
         LiteDatabase db;
         public string Greeting => "Nástroje";
         public ObservableCollection<ICollectionModels> Items { get; set; }
+        public ObservableCollection<string> SearchComboBoxItems { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
+
+        public string SearchComboBoxSelectedItem
+        {
+            get => searchComboBoxSelectedItem;
+            set
+            {
+                this.RaiseAndSetIfChanged(ref searchComboBoxSelectedItem, value);
+                OnSearchComboBoxChanged();
+            }
+        }
+
+        private void OnSearchComboBoxChanged()
+        {
+
+        }
 
         public string SearchBoxText
         {
@@ -79,6 +96,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             db = database;
             MainViewModel = mainWindowViewModel;
             Items = new ObservableCollection<ICollectionModels>();
+            SearchComboBoxItems = new ObservableCollection<string>();
+            ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.DELNIK);
 
             PridatZaznamCommand = ReactiveCommand.Create(PridejZaznam);
             OdebratZaznamCommand = ReactiveCommand.Create(OdeberZaznam);
@@ -117,6 +136,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                         Items.Add(result);
                         System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
+                    ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.DELNIK);
                     break;
                 case 1:
                     Items.Clear();
@@ -132,6 +152,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                         Items.Add(result);
                         System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
+                    ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.LINKA);
                     break;
                 case 2:
                     Items.Clear();
@@ -146,6 +167,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                         Items.Add(result);
                         System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
+                    ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.MISTR);
                     break;
                 case 3:
                     Items.Clear();
@@ -163,6 +185,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                     }
 
                     System.Diagnostics.Debug.WriteLine(Items.Count);
+                    ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.STROJ);
                     break;
                 case 4:
                     Items.Clear();
@@ -178,6 +201,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                         Items.Add(result);
                         System.Diagnostics.Debug.WriteLine(result.ToString());
                     }
+                    ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.ZAVOD);
                     break;
 
 
@@ -186,6 +210,52 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        private void ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum entityType)
+        {
+            SearchComboBoxItems.Clear();
+            switch (entityType)
+            {
+                case EntityEnum.DELNIK:
+                    SearchComboBoxItems.Add("Vše");
+                    SearchComboBoxItems.Add("Dìlník ID");
+                    SearchComboBoxItems.Add("Jméno");
+                    SearchComboBoxItems.Add("Smìna");
+                    SearchComboBoxItems.Add("Stroj ID");
+                    SearchComboBoxItems.Add("Mistr ID");
+                    break;
+                case EntityEnum.LINKA:
+                    SearchComboBoxItems.Add("Vše");
+                    SearchComboBoxItems.Add("Linka ID");
+                    SearchComboBoxItems.Add("Jméno");
+                    SearchComboBoxItems.Add("Produkt");
+                    SearchComboBoxItems.Add("Závod ID");
+                    break;
+                case EntityEnum.MISTR:
+                    SearchComboBoxItems.Add("Vše");
+                    SearchComboBoxItems.Add("Jméno");
+                    SearchComboBoxItems.Add("Mistr ID");
+                    SearchComboBoxItems.Add("Smìna");
+                    SearchComboBoxItems.Add("Linka ID");
+                    break;
+                case EntityEnum.STROJ:
+                    SearchComboBoxItems.Add("Vše");
+                    SearchComboBoxItems.Add("Stroj ID");
+                    SearchComboBoxItems.Add("Název");
+                    SearchComboBoxItems.Add("Rychlost");
+                    SearchComboBoxItems.Add("Linka ID");
+                    break;
+                case EntityEnum.ZAVOD:
+                    SearchComboBoxItems.Add("Vše");
+                    SearchComboBoxItems.Add("Závod ID");
+                    SearchComboBoxItems.Add("Název");
+                    SearchComboBoxItems.Add("Adresa");
+                    break;
+                default:
+                    break;
+            }
+            SearchComboBoxSelectedItem = "Vše";
+
+        }
 
         private void OdeberZaznam()
         {
@@ -330,7 +400,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             if (!string.IsNullOrWhiteSpace(SearchBoxText))
             {
                 ObservableCollection<ICollectionModels> itemsSearched = new ObservableCollection<ICollectionModels>();
-                IEnumerable<ICollectionModels> itemsFound = Items.Where(x => x.ToString().Contains(SearchBoxText));
+                IEnumerable<ICollectionModels> itemsFound = Items.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower()));
                 itemsSearched.Clear();
                 foreach (var item in itemsFound)
                 {
