@@ -13,8 +13,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 {
     public class LinkaAddViewModel : ViewModelBase
     {
+        //Kolekce na které se bindují data ComboBoxů
         public ObservableCollection<ProductsEnum> LinkaAddItems { get; set; }
         public ObservableCollection<Zavod> LinkaZavodItems { get; set; }
+
+        //parametry pro vytvoření nové linky
         private string linkaName;
         private ProductsEnum linkaProductSelectedItem;
         private Zavod linkaZavodSelectedItem;
@@ -58,19 +61,20 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
             //kontrola jestli mají všechny pole zadané data, předává se jako druhý parametr příkazu LinkaOk(true/false)
             var okEnabled = this.WhenAnyValue(
-                   x => x.LinkaName,x => x.LinkaProductSelectedItem, x=> x.LinkaZavodSelectedItem,
-                   (name,product,zavod) => 
+                   x => x.LinkaName, x => x.LinkaProductSelectedItem, x => x.LinkaZavodSelectedItem,
+                   (name, product, zavod) =>
                    !string.IsNullOrWhiteSpace(name) &&
                    product != null &&
                    zavod != null
                 );
 
             //vytvoří novou linku a pošle ji jako event který přijme metoda LinkaAddItem() v MainWindowViewModel.cs
-            LinkaOk = ReactiveCommand.Create(() => new Linka { 
+            LinkaOk = ReactiveCommand.Create(() => new Linka
+            {
                 Name = LinkaName,
                 Product = LinkaProductSelectedItem,
-                ZavodId = LinkaZavodSelectedItem.ZavodId 
-            },okEnabled);
+                ZavodId = LinkaZavodSelectedItem.ZavodId
+            }, okEnabled);
             LinkaCancel = ReactiveCommand.Create(() => { });
 
         }
