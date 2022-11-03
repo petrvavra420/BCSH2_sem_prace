@@ -100,5 +100,22 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 );
             Content = vm;
         }
+
+        public void DelnikAddItem()
+        {
+            var vm = new DelnikAddViewModel(db);
+            Observable.Merge(vm.DelnikOk, vm.DelnikCancel.Select(_ => (Delnik)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.VlozZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+            Content = vm;
+        }
     }
 }

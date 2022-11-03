@@ -15,10 +15,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
         public string Name { get; set; }
         //každý dělník má směnu dle ShiftsEnum
         public ShiftsEnum Shift { get; set; }
-        public  int StrojId { get; set; }
+        public int StrojId { get; set; }
         public int MistrId { get; set; }
 
-        public Delnik(string name, ShiftsEnum shift, int strojId, int mistrId) {
+        public Delnik(string name, ShiftsEnum shift, int strojId, int mistrId)
+        {
             Name = name;
             Shift = shift;
             StrojId = strojId;
@@ -29,10 +30,13 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.Models
             Name = name;
             Shift = shift;
         }
+        public Delnik()
+        {
+        }
 
         public override string ToString()
         {
-            return "ID: " + DelnikId + ", Jméno: " + Name + ", Směna: " + Shift + ", Stroj: " + StrojId + ", Mistr: " + MistrId; 
+            return "ID: " + DelnikId + ", Jméno: " + Name + ", Směna: " + Shift + ", Stroj: " + StrojId + ", Mistr: " + MistrId;
         }
     }
 }

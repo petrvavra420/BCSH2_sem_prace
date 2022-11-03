@@ -232,6 +232,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             switch (_selectedEntity)
             {
                 case 0:
+                    MainViewModel.DelnikAddItem();
                     break;
                 case 1:
                     MainViewModel.LinkaAddItem();
@@ -300,7 +301,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
             else if (polozka is Delnik)
             {
-
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colDelnik = db.GetCollection<Delnik>("Delnik");
+                colDelnik.Insert((Delnik)polozka);
+                colDelnik.EnsureIndex(x => x.DelnikId);
+                Items.Add(polozka);
             }
 
         }
