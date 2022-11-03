@@ -1,7 +1,9 @@
 using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models.Enums;
+using DynamicData;
 using LiteDB;
+using Microsoft.CodeAnalysis;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -27,7 +29,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         public ObservableCollection<string> SearchComboBoxItems { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
 
-        public bool DeleteButtonEnable {
+        public bool DeleteButtonEnable
+        {
             get => deleteButtonEnable;
             set => this.RaiseAndSetIfChanged(ref deleteButtonEnable, value);
         }
@@ -225,6 +228,67 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        void UpdateData()
+        {
+
+            switch (_selectedEntity)
+            {
+                case 0:
+                    SelectedEntityString = "Dìlníci";
+                    VymazSeznam();
+                    var colDelnik = db.GetCollection<Delnik>("Delnik");
+                    IEnumerable<Delnik> resultsDelnik = colDelnik.FindAll();
+                    foreach (var result in resultsDelnik)
+                    {
+                        Items.Add(result);
+                    }
+                    break;
+                case 1:
+                    Items.Clear();
+                    SelectedEntityString = "Linky";
+                    var colLinka = db.GetCollection<Linka>("Linka");
+                    IEnumerable<Linka> resultsLinka = colLinka.FindAll();
+                    foreach (var result in resultsLinka)
+                    {
+                        Items.Add(result);
+                    }
+                    break;
+                case 2:
+                    Items.Clear();
+                    SelectedEntityString = "Mistøi";
+                    var colMistr = db.GetCollection<Mistr>("Mistr");
+                    IEnumerable<Mistr> resultsMistr = colMistr.FindAll();
+
+                    foreach (var result in resultsMistr)
+                    {
+                        Items.Add(result);
+                    }
+                    break;
+                case 3:
+                    Items.Clear();
+                    SelectedEntityString = "Stroje";
+                    var colStroj = db.GetCollection<Stroj>("Stroj");
+                    IEnumerable<Stroj> resultsStroj = colStroj.FindAll();
+                    foreach (var result in resultsStroj)
+                    {
+                        Items.Add(result);
+                    }
+                    break;
+                case 4:
+                    Items.Clear();
+                    SelectedEntityString = "Závody";
+                    var colZavod = db.GetCollection<Zavod>("Zavod");
+                    IEnumerable<Zavod> resultsZavod = colZavod.FindAll();
+                    foreach (var result in resultsZavod)
+                    {
+                        Items.Add(result);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+
         private void ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum entityType)
         {
             SearchComboBoxItems.Clear();
@@ -411,31 +475,246 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         private void OnSearchInputChange()
         {
-            //vyhledávání podle všeho
+            System.Diagnostics.Debug.WriteLine("Typed: " + SearchBoxText);
             if (!string.IsNullOrWhiteSpace(SearchBoxText))
             {
-                ObservableCollection<ICollectionModels> itemsSearched = new ObservableCollection<ICollectionModels>();
-                IEnumerable<ICollectionModels> itemsFound = Items.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower()));
-                itemsSearched.Clear();
-                foreach (var item in itemsFound)
+                switch (_selectedEntity)
                 {
-                    itemsSearched.Add(item);
-                }
-
-                Items.Clear();
-                for (int i = 0; i < itemsSearched.Count; i++)
-                {
-                    Items.Add(itemsSearched[i]);
+                    case 0:
+                        DelnikSearch();
+                        break;
+                    case 1:
+                        LinkaSearch();
+                        break;
+                    case 2:
+                        MistrSearch();
+                        break;
+                    case 3:
+                        StrojSearch();
+                        break;
+                    case 4:
+                        ZavodSearch();
+                        break;
+                    default:
+                        break;
                 }
             }
             else
             {
-                ComboBoxSelectionChanged();
+                UpdateData();
             }
         }
 
+        //Metody pro vyhledávání - každá metoda si vytvoøí pomocnou pøetypovanou kolekci a vloží do ní všechny záznamy
+        //Potom zjistí obsah ComboBoxu a podle toho do itemsFound vloží data
+        //Smaže data z hlavní kolekce Items a vloží do ní nalezené záznamy
+        private void ZavodSearch()
+        {
+            UpdateData();
+            ObservableCollection<Zavod> itemsSearched = new ObservableCollection<Zavod>();
+            ObservableCollection<Zavod> itemsCopy = new ObservableCollection<Zavod>();
 
+            for (int i = 0; i < Items.Count; i++)
+            {
+                itemsCopy.Add((Zavod)Items[i]);
+            }
+            IEnumerable<Zavod> itemsFound = itemsCopy.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower())); ;
 
+            switch (SearchComboBoxSelectedItem)
+            {
+                case "Závod ID":
+                    itemsFound = itemsCopy.Where(x => x.ZavodId.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Název":
+                    itemsFound = itemsCopy.Where(x => x.Name.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Adresa":
+                    itemsFound = itemsCopy.Where(x => x.Adress.ToString().Contains(SearchBoxText));
+                    break;
+                default:
+                    break;
+            }
+            itemsSearched.Clear();
+            foreach (var item in itemsFound)
+            {
+                itemsSearched.Add(item);
+            }
+            Items.Clear();
+            for (int i = 0; i < itemsSearched.Count; i++)
+            {
+                Items.Add(itemsSearched[i]);
+            }
+        }
+
+        private void StrojSearch()
+        {
+            UpdateData();
+            ObservableCollection<Stroj> itemsSearched = new ObservableCollection<Stroj>();
+            ObservableCollection<Stroj> itemsCopy = new ObservableCollection<Stroj>();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                itemsCopy.Add((Stroj)Items[i]);
+            }
+            IEnumerable<Stroj> itemsFound = itemsCopy.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower())); ;
+
+            switch (SearchComboBoxSelectedItem)
+            {
+                case "Stroj ID":
+                    itemsFound = itemsCopy.Where(x => x.StrojId.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Název":
+                    itemsFound = itemsCopy.Where(x => x.Name.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Rychlost":
+                    itemsFound = itemsCopy.Where(x => x.ManufacturingSpeed.ToString().Contains(SearchBoxText));
+                    break;
+                case "Linka ID":
+                    itemsFound = itemsCopy.Where(x => x.LinkaId.ToString().Contains(SearchBoxText));
+                    break;
+                default:
+                    break;
+            }
+            itemsSearched.Clear();
+            foreach (var item in itemsFound)
+            {
+                itemsSearched.Add(item);
+            }
+            Items.Clear();
+            for (int i = 0; i < itemsSearched.Count; i++)
+            {
+                Items.Add(itemsSearched[i]);
+            }
+        }
+
+        private void MistrSearch()
+        {
+            UpdateData();
+            ObservableCollection<Mistr> itemsSearched = new ObservableCollection<Mistr>();
+            ObservableCollection<Mistr> itemsCopy = new ObservableCollection<Mistr>();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                itemsCopy.Add((Mistr)Items[i]);
+            }
+            IEnumerable<Mistr> itemsFound = itemsCopy.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower())); ;
+
+            switch (SearchComboBoxSelectedItem)
+            {
+                case "Mistr ID":
+                    itemsFound = itemsCopy.Where(x => x.MistrId.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Jméno":
+                    itemsFound = itemsCopy.Where(x => x.Name.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Smìna":
+                    itemsFound = itemsCopy.Where(x => x.Shift.ToString().Contains(SearchBoxText));
+                    break;
+                case "Linka ID":
+                    itemsFound = itemsCopy.Where(x => x.LinkaId.ToString().Contains(SearchBoxText));
+                    break;
+                default:
+                    break;
+            }
+            itemsSearched.Clear();
+            foreach (var item in itemsFound)
+            {
+                itemsSearched.Add(item);
+            }
+            Items.Clear();
+            for (int i = 0; i < itemsSearched.Count; i++)
+            {
+                Items.Add(itemsSearched[i]);
+            }
+        }
+
+        private void LinkaSearch()
+        {
+            UpdateData();
+            ObservableCollection<Linka> itemsSearched = new ObservableCollection<Linka>();
+            ObservableCollection<Linka> itemsCopy = new ObservableCollection<Linka>();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                itemsCopy.Add((Linka)Items[i]);
+            }
+            IEnumerable<Linka> itemsFound = itemsCopy.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower())); ;
+
+            switch (SearchComboBoxSelectedItem)
+            {
+                case "Linka ID":
+                    itemsFound = itemsCopy.Where(x => x.LinkaId.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Jméno":
+                    itemsFound = itemsCopy.Where(x => x.Name.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Produkt":
+                    itemsFound = itemsCopy.Where(x => x.Product.ToString().Contains(SearchBoxText));
+                    break;
+                case "Závod ID":
+                    itemsFound = itemsCopy.Where(x => x.ZavodId.ToString().Contains(SearchBoxText));
+                    break;
+                default:
+                    break;
+            }
+            itemsSearched.Clear();
+            foreach (var item in itemsFound)
+            {
+                itemsSearched.Add(item);
+            }
+            Items.Clear();
+            for (int i = 0; i < itemsSearched.Count; i++)
+            {
+                Items.Add(itemsSearched[i]);
+            }
+        }
+
+        private void DelnikSearch()
+        {
+            UpdateData();
+            ObservableCollection<Delnik> itemsSearched = new ObservableCollection<Delnik>();
+            ObservableCollection<Delnik> itemsCopy = new ObservableCollection<Delnik>();
+
+            for (int i = 0; i < Items.Count; i++)
+            {
+                itemsCopy.Add((Delnik)Items[i]);
+            }
+            //Hledání podle všeho
+            IEnumerable<Delnik> itemsFound = itemsCopy.Where(x => x.ToString().ToLower().Contains(SearchBoxText.ToLower())); ;
+
+            switch (SearchComboBoxSelectedItem)
+            {
+
+                case "Jméno":
+                    itemsFound = itemsCopy.Where(x => x.Name.ToString().ToLower().Contains(SearchBoxText.ToLower()));
+                    break;
+                case "Dìlník ID":
+                    itemsFound = itemsCopy.Where(x => x.DelnikId.ToString().Contains(SearchBoxText));
+                    break;
+                case "Smìna":
+                    itemsFound = itemsCopy.Where(x => x.Shift.ToString().Contains(SearchBoxText));
+                    break;
+                case "Stroj ID":
+                    itemsFound = itemsCopy.Where(x => x.StrojId.ToString().Contains(SearchBoxText));
+                    break;
+                case "Mistr ID":
+                    itemsFound = itemsCopy.Where(x => x.MistrId.ToString().Contains(SearchBoxText));
+                    break;
+
+                default:
+                    break;
+            }
+            itemsSearched.Clear();
+            foreach (var item in itemsFound)
+            {
+                itemsSearched.Add(item);
+            }
+            Items.Clear();
+            for (int i = 0; i < itemsSearched.Count; i++)
+            {
+                Items.Add(itemsSearched[i]);
+            }
+        }
 
     }
 }
