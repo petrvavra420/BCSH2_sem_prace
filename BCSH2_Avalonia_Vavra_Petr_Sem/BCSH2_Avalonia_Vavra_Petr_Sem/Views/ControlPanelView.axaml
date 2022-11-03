@@ -25,7 +25,7 @@
 			
 			<Button HorizontalAlignment="Center" Margin="10,0,10,5" Width="190" Command="{Binding PridatZaznamCommand}">Přidat nový záznam</Button>
 			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding EditovatZaznamCommand}">Editovat vybraný záznam</Button>
-			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding OdebratZaznamCommand}">Smazat vybraný záznam</Button>
+			<Button HorizontalAlignment="Center" Margin="10,5,10,5" Width="190" Command="{Binding OdebratZaznamCommand}" IsEnabled="{Binding DeleteButtonEnable}">Smazat vybraný záznam</Button>
 			<WrapPanel HorizontalAlignment="Center" Margin="10,5,10,5">
 			<TextBlock Text="Výběr tabulky:" Margin="10,0,10,0" VerticalAlignment="Center"></TextBlock>
 			<ComboBox  SelectedIndex="{Binding SelectedEntity}" >

@@ -22,9 +22,15 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         private string searchComboBoxSelectedItem;
         LiteDatabase db;
         public string Greeting => "Nástroje";
+        private bool deleteButtonEnable;
         public ObservableCollection<ICollectionModels> Items { get; set; }
         public ObservableCollection<string> SearchComboBoxItems { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
+
+        public bool DeleteButtonEnable {
+            get => deleteButtonEnable;
+            set => this.RaiseAndSetIfChanged(ref deleteButtonEnable, value);
+        }
 
         public string SearchComboBoxSelectedItem
         {
@@ -58,6 +64,14 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             {
                 this.RaiseAndSetIfChanged(ref _selectedItemList, value);
                 OnListSelectionChange();
+                if (value != null)
+                {
+                    DeleteButtonEnable = true;
+                }
+                else
+                {
+                    DeleteButtonEnable = false;
+                }
             }
         }
 
@@ -98,6 +112,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             Items = new ObservableCollection<ICollectionModels>();
             SearchComboBoxItems = new ObservableCollection<string>();
             ChangeSearchComboBoxItemsBasedOnEntity(EntityEnum.DELNIK);
+            DeleteButtonEnable = false;
 
             PridatZaznamCommand = ReactiveCommand.Create(PridejZaznam);
             OdebratZaznamCommand = ReactiveCommand.Create(OdeberZaznam);
