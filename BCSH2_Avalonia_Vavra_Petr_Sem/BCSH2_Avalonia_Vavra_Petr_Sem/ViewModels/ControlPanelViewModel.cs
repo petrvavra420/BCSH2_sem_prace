@@ -47,7 +47,6 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         private void OnSearchComboBoxChanged()
         {
-
         }
 
         public string SearchBoxText

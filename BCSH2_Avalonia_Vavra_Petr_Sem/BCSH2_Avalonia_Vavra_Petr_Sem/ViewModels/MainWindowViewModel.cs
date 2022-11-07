@@ -22,7 +22,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         public MainWindowViewModel()
         {
-            db = new LiteDatabase(@"C:\Temp\Databasetest.db");
+            db = new LiteDatabase(@"..\..\..\Database\Databasetest.db");
             Content = MainPage = new ControlPanelViewModel(this, db);
         }
         public ControlPanelViewModel MainPage { get; }

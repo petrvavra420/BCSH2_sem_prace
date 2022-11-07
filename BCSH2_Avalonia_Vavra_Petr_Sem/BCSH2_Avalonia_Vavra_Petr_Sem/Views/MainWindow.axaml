@@ -6,13 +6,13 @@
 		xmlns:views="clr-namespace:BCSH2_Avalonia_Vavra_Petr_Sem.Views"
         Width="1000" Height="650"
         x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.MainWindow"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/evidenceIkona.png"
         Title="Evidence fabrik"
 		Content="{Binding Content}"
-		TransparencyLevelHint="AcrylicBlur"
-		Background="Transparent"
+		TransparencyLevelHint="Transparent"
+		Background="#282828"
 		ExtendClientAreaToDecorationsHint="True">
-	
+
 	
 
 </Window>
