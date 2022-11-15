@@ -118,6 +118,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
             PridatZaznamCommand = ReactiveCommand.Create(PridejZaznam);
             OdebratZaznamCommand = ReactiveCommand.Create(OdeberZaznam);
+            EditovatZaznamCommand = ReactiveCommand.Create(EditujZaznam);
 
             //defaultnì zobrazí dìlníky
             Items.Clear();
@@ -134,6 +135,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         public ReactiveCommand<Unit, Unit> OdebratZaznamCommand { get; }
         public ReactiveCommand<Unit, Unit> PridatZaznamCommand { get; }
+        public ReactiveCommand<Unit, Unit> EditovatZaznamCommand { get; }
 
         void ComboBoxSelectionChanged()
         {
@@ -333,6 +335,32 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
             SearchComboBoxSelectedItem = "Vše";
 
+        }
+        private void EditujZaznam()
+        {
+            System.Diagnostics.Debug.WriteLine("edituj!");
+            //System.Diagnostics.Debug.WriteLine(ListSelectedItem.ToString());
+            ICollectionModels polozka = ListSelectedItem;
+            switch (_selectedEntity)
+            {
+                case 0:
+                    MainViewModel.DelnikEditItem(polozka);
+                    break;
+                case 1:
+                    MainViewModel.LinkaEditItem(polozka);
+                    break;
+                case 2:
+                    MainViewModel.MistrEditItem(polozka);
+                    break;
+                case 3:
+                    MainViewModel.StrojEditItem(polozka);
+                    break;
+                case 4:
+                    MainViewModel.ZavodEditItem(polozka);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void OdeberZaznam()
@@ -715,5 +743,45 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             }
         }
 
+        internal void EditujZaznam(ICollectionModels polozka)
+        {
+            if (polozka is Zavod)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colZavod = db.GetCollection<Zavod>("Zavod");
+                colZavod.Update((Zavod)polozka);
+            }
+            else if (polozka is Stroj)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colStroj = db.GetCollection<Stroj>("Stroj");
+                colStroj.Insert((Stroj)polozka);
+                colStroj.EnsureIndex(x => x.StrojId);
+                Items.Add(polozka);
+            }
+            else if (polozka is Mistr)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colMistr = db.GetCollection<Mistr>("Mistr");
+                colMistr.Insert((Mistr)polozka);
+                colMistr.EnsureIndex(x => x.MistrId);
+                Items.Add(polozka);
+            }
+            else if (polozka is Linka)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString());
+                var colLinka = db.GetCollection<Linka>("Linka");
+                colLinka.Insert((Linka)polozka);
+                colLinka.EnsureIndex(x => x.LinkaId);
+                Items.Add(polozka);
+            }
+            else if (polozka is Delnik)
+            {
+                System.Diagnostics.Debug.WriteLine(polozka.ToString() + "Aktualizace");
+                var colDelnik = db.GetCollection<Delnik>("Delnik");
+                colDelnik.Update((Delnik)polozka);
+                UpdateData();
+            }
+        }
     }
 }

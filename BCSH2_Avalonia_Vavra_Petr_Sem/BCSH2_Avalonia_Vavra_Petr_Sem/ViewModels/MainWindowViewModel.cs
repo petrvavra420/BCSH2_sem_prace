@@ -1,5 +1,7 @@
 using Avalonia.Controls;
+using BCSH2_Avalonia_Vavra_Petr_Sem.Interfaces;
 using BCSH2_Avalonia_Vavra_Petr_Sem.Models;
+using BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit;
 using LiteDB;
 using ReactiveUI;
 using System;
@@ -116,6 +118,43 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 }
                 );
             Content = vm;
+        }
+
+        internal void DelnikEditItem(ICollectionModels polozka)
+        {
+            var vm = new DelnikEditViewModel(db, polozka);
+            Observable.Merge(vm.DelnikOk, vm.DelnikCancel.Select(_ => (Delnik)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.EditujZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+            Content = vm;
+        }
+
+        internal void LinkaEditItem(ICollectionModels polozka)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void MistrEditItem(ICollectionModels polozka)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void StrojEditItem(ICollectionModels polozka)
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void ZavodEditItem(ICollectionModels polozka)
+        {
+            throw new NotImplementedException();
         }
     }
 }
