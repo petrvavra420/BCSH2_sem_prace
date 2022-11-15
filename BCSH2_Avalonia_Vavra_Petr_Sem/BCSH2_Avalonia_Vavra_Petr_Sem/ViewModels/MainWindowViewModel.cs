@@ -29,6 +29,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         }
         public ControlPanelViewModel MainPage { get; }
 
+
+        //metody pro pøidávání záznamù
         public void ZavodAddItem()
         {
             var vm = new ZavodAddViewModel();
@@ -120,6 +122,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
             Content = vm;
         }
 
+        //metody pro editaci záznamù
         internal void DelnikEditItem(ICollectionModels polozka)
         {
             var vm = new DelnikEditViewModel(db, polozka);
@@ -144,17 +147,53 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         internal void MistrEditItem(ICollectionModels polozka)
         {
-            throw new NotImplementedException();
+            var vm = new MistrEditViewModel(db,polozka);
+            Observable.Merge(vm.MistrOk, vm.MistrCancel.Select(_ => (Mistr)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.EditujZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+            Content = vm;
         }
 
         internal void StrojEditItem(ICollectionModels polozka)
         {
-            throw new NotImplementedException();
+            var vm = new StrojEditViewModel(db,polozka);
+            Observable.Merge(vm.StrojOk, vm.StrojCancel.Select(_ => (Stroj)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.EditujZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+            Content = vm;
         }
 
         internal void ZavodEditItem(ICollectionModels polozka)
         {
-            throw new NotImplementedException();
+            var vm = new ZavodEditViewModel(db, polozka);
+            Observable.Merge(vm.Ok, vm.Cancel.Select(_ => (Zavod)null))
+                 .Take(1)
+                 .Subscribe(model =>
+                 {
+                     if (model != null)
+                     {
+                         MainPage.EditujZaznam(model);
+                     }
+                     Content = MainPage;
+                 }
+                 );
+            Content = vm;
         }
     }
 }

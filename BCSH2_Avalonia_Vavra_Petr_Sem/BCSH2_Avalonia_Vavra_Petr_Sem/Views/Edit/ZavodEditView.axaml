@@ -1,0 +1,31 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="BCSH2_Avalonia_Vavra_Petr_Sem.Views.Edit.ZavodEditView">
+	<Grid>
+		<Grid.RowDefinitions>
+		</Grid.RowDefinitions>
+		<Grid.ColumnDefinitions>
+		</Grid.ColumnDefinitions>
+		<StackPanel Width="200">
+			<TextBlock FontSize="18" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">Přidat nový závod</TextBlock>
+
+			<TextBox Margin="5" Text="{Binding ZavodName}" Watermark="Název"></TextBox>
+			<TextBox Margin="5" Text="{Binding ZavodStat}" Watermark="Stát"></TextBox>
+			<TextBox Margin="5" Text="{Binding ZavodMesto}" Watermark="Město"></TextBox>
+			<TextBox Margin="5" Text="{Binding ZavodUlice}" Watermark="Ulice"></TextBox>
+			<WrapPanel HorizontalAlignment="Center">
+				<TextBlock VerticalAlignment="Center">Č. p.</TextBlock>
+				<TextBox Margin="5" Text="{Binding ZavodCisloPopisne}" ></TextBox>
+			</WrapPanel>
+			<WrapPanel HorizontalAlignment="Center">
+				<TextBlock VerticalAlignment="Center">PSČ: </TextBlock>
+				<TextBox Margin="5" Text="{Binding ZavodPSC}" ></TextBox>
+			</WrapPanel>
+			<Button Command="{Binding Ok}" Margin="5,10,5,5" HorizontalAlignment="Center" Width="150"> Uložit</Button>
+			<Button Command="{Binding Cancel}" Margin="5,5,5,5" HorizontalAlignment="Center" Width="150"> Zrušit</Button>
+		</StackPanel>
+	</Grid>
+</UserControl>

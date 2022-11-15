@@ -750,14 +750,14 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colZavod = db.GetCollection<Zavod>("Zavod");
                 colZavod.Update((Zavod)polozka);
+                UpdateData();
             }
             else if (polozka is Stroj)
             {
                 System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colStroj = db.GetCollection<Stroj>("Stroj");
-                colStroj.Insert((Stroj)polozka);
-                colStroj.EnsureIndex(x => x.StrojId);
-                Items.Add(polozka);
+                colStroj.Update((Stroj)polozka);
+                UpdateData();
             }
             else if (polozka is Mistr)
             {
