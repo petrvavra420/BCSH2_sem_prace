@@ -25,6 +25,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         LiteDatabase db;
         public string Greeting => "Nástroje";
         private bool deleteButtonEnable;
+        private bool editButtonEnable;
         public ObservableCollection<ICollectionModels> Items { get; set; }
         public ObservableCollection<string> SearchComboBoxItems { get; set; }
         private MainWindowViewModel MainViewModel { get; set; }
@@ -33,6 +34,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         {
             get => deleteButtonEnable;
             set => this.RaiseAndSetIfChanged(ref deleteButtonEnable, value);
+        }
+        public bool EditButtonEnable
+        {
+            get => editButtonEnable;
+            set => this.RaiseAndSetIfChanged(ref editButtonEnable, value);
         }
 
         public string SearchComboBoxSelectedItem
@@ -69,10 +75,12 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
                 if (value != null)
                 {
                     DeleteButtonEnable = true;
+                    EditButtonEnable = true;
                 }
                 else
                 {
                     DeleteButtonEnable = false;
+                    EditButtonEnable = false;
                 }
             }
         }
