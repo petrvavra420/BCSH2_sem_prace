@@ -15,6 +15,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit
 {
     public class MistrEditViewModel : ViewModelBase
     {
+        private int idMistr;
         private string mistrName;
         private ShiftsEnum mistrShift;
         private Linka mistrLinka;
@@ -43,6 +44,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit
 
         public MistrEditViewModel(LiteDatabase database, ICollectionModels polozka)
         {
+            Mistr mistr = (Mistr)polozka;
+            idMistr = mistr.MistrId;
             db = database;
             MistrShiftItems = new ObservableCollection<ShiftsEnum>();
             MistrLinkaItems = new ObservableCollection<Linka>();
@@ -51,6 +54,8 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit
             {
                 MistrShiftItems.Add(item);
             }
+            
+            
 
             var colLinka = db.GetCollection<Linka>("Linka");
             IEnumerable<Linka> resultsLinka = colLinka.FindAll();
@@ -60,6 +65,11 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit
                 MistrLinkaItems.Add(result);
                 System.Diagnostics.Debug.WriteLine(result.ToString());
             }
+
+            //Nastaví hodnoty do comboboxů dle vybrané položky
+            MistrName = mistr.Name;
+            MistrShiftSelectedItem = mistr.Shift;
+            MistrLinkaSelectedItem = MistrLinkaItems.Where(x => x.LinkaId == mistr.LinkaId).FirstOrDefault();
 
             var okEnabled = this.WhenAnyValue(
                 x => x.MistrName, x => x.MistrShiftSelectedItem, x => x.MistrLinkaSelectedItem,
@@ -72,6 +82,7 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels.Edit
             MistrOk = ReactiveCommand.Create(() =>
                 new Mistr
                 {
+                    MistrId = idMistr,
                     Name = MistrName,
                     Shift = MistrShiftSelectedItem,
                     LinkaId = MistrLinkaSelectedItem.LinkaId

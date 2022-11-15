@@ -747,37 +747,30 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
         {
             if (polozka is Zavod)
             {
-                System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colZavod = db.GetCollection<Zavod>("Zavod");
                 colZavod.Update((Zavod)polozka);
                 UpdateData();
             }
             else if (polozka is Stroj)
             {
-                System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colStroj = db.GetCollection<Stroj>("Stroj");
                 colStroj.Update((Stroj)polozka);
                 UpdateData();
             }
             else if (polozka is Mistr)
             {
-                System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colMistr = db.GetCollection<Mistr>("Mistr");
-                colMistr.Insert((Mistr)polozka);
-                colMistr.EnsureIndex(x => x.MistrId);
-                Items.Add(polozka);
+                colMistr.Update((Mistr)polozka);
+                UpdateData();
             }
             else if (polozka is Linka)
             {
-                System.Diagnostics.Debug.WriteLine(polozka.ToString());
                 var colLinka = db.GetCollection<Linka>("Linka");
-                colLinka.Insert((Linka)polozka);
-                colLinka.EnsureIndex(x => x.LinkaId);
-                Items.Add(polozka);
+                colLinka.Update((Linka)polozka);
+                UpdateData();
             }
             else if (polozka is Delnik)
             {
-                System.Diagnostics.Debug.WriteLine(polozka.ToString() + "Aktualizace");
                 var colDelnik = db.GetCollection<Delnik>("Delnik");
                 colDelnik.Update((Delnik)polozka);
                 UpdateData();

@@ -142,7 +142,20 @@ namespace BCSH2_Avalonia_Vavra_Petr_Sem.ViewModels
 
         internal void LinkaEditItem(ICollectionModels polozka)
         {
-            throw new NotImplementedException();
+            var vm = new LinkaEditViewModel(db,polozka);
+            Observable.Merge(vm.LinkaOk, vm.LinkaCancel.Select(_ => (Linka)null))
+                .Take(1)
+                .Subscribe(model =>
+                {
+                    if (model != null)
+                    {
+                        MainPage.EditujZaznam(model);
+                    }
+                    Content = MainPage;
+                }
+                );
+
+            Content = vm;
         }
 
         internal void MistrEditItem(ICollectionModels polozka)
